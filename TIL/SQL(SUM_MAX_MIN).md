@@ -98,7 +98,7 @@ ORDER BY HOUR(DATETIME);
 
 > [프로그래머스_입양시각구하기(2)](https://programmers.co.kr/learn/courses/30/lessons/59413)
 >
-> `WITH RECURSIVE` 
+> `WITH RECURSIVE`  함수
 >
 > 1) 메모리상에 가상의 테이블을 저장
 >
