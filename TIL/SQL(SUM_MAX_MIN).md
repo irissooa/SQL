@@ -146,3 +146,98 @@ GROUP BY H
 ORDER BY H;
 ```
 
+
+
+## 프로그래머스_없어진기록찾기
+
+> [프로그래머스_없어진기록찾기](https://programmers.co.kr/learn/courses/30/lessons/59042)
+>
+> **USING VS ON 차이**
+>
+> USING은 두 테이블간 필드이름이 같을 경우 사용
+>
+> ON은 만일 조인시 칼럼 이름이 다를경우, 같아도 상용가능
+
+```mysql
+-- 코드를 입력하세요
+SELECT O.ANIMAL_ID, O.NAME
+FROM ANIMAL_OUTS AS O
+LEFT JOIN ANIMAL_INS AS I USING(ANIMAL_ID)
+WHERE I.ANIMAL_ID IS NULL
+ORDER BY O.ANIMAL_ID;
+```
+
+
+
+## 프로그래머스_있었는데요없었습니다
+
+> [프로그래머스_있었는데요없었습니다](https://programmers.co.kr/learn/courses/30/lessons/59043)
+
+```mysql
+-- 코드를 입력하세요
+SELECT I.ANIMAL_ID, I.NAME
+FROM ANIMAL_INS AS I
+JOIN ANIMAL_OUTS AS O
+USING(ANIMAL_ID)
+WHERE O.DATETIME < I.DATETIME
+ORDER BY I.DATETIME;
+```
+
+
+
+## 프로그래머스_오랜기간보호한동물(1)
+
+> [프로그래머스_오랜기간보호한동물(1)](https://programmers.co.kr/learn/courses/30/lessons/59044)
+
+```mysql
+-- 코드를 입력하세요
+SELECT I.NAME, I.DATETIME
+FROM ANIMAL_INS AS I
+LEFT JOIN ANIMAL_OUTS AS O
+USING(ANIMAL_ID)
+WHERE O.ANIMAL_ID IS NULL
+ORDER BY I.DATETIME
+LIMIT 3;
+```
+
+- 다른코드
+
+```mysql
+SELECT AI.NAME, AI.DATETIME
+FROM ANIMAL_INS AS AI
+LEFT OUTER JOIN
+ANIMAL_OUTS AS AO
+USING (ANIMAL_ID)
+WHERE AO.ANIMAL_ID IS NULL
+ORDER BY AI.DATETIME
+LIMIT 3
+```
+
+
+
+## 프로그래머스_보호소에서 중성화한 동물
+
+> [프로그래머스_보호소에서 중성화한 동물](https://programmers.co.kr/learn/courses/30/lessons/59045)
+
+```mysql
+-- 코드를 입력하세요
+SELECT I.ANIMAL_ID, I.ANIMAL_TYPE, I.NAME
+FROM ANIMAL_INS AS I
+JOIN ANIMAL_OUTS AS O
+USING(ANIMAL_ID)
+WHERE I.SEX_UPON_INTAKE != O.SEX_UPON_OUTCOME
+ORDER BY O.ANIMAL_ID;
+```
+
+- 다른코드
+
+```mysql
+-- 코드를 입력하세요
+SELECT O.ANIMAL_ID, O.ANIMAL_TYPE, O.NAME
+FROM ANIMAL_OUTS AS O
+LEFT OUTER JOIN ANIMAL_INS AS I
+ON O.ANIMAL_ID = I.ANIMAL_ID
+WHERE O.SEX_UPON_OUTCOME != I.SEX_UPON_INTAKE
+ORDER BY ANIMAL_ID
+```
+
