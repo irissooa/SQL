@@ -231,6 +231,16 @@ ORDER BY O.ANIMAL_ID;
 
 - 다른코드
 
+> OUTER JOIN에선 LEFT, RIGHT 말고도 추가로 FULL OUTER JOIN도 존재한다. 다만 MySQL에선 FULL OUTER JOIN이 지원이 되지 않기에 INNER JOIN과 OUTER JOIN을 활용해서 만들어야 한다.
+>
+> **JOIN의 처리에서 어느 테이블을 먼저 읽을지를 결정하는 것은 상당히 중요하다.** 처리할 작업량에 따라 속도가 달라지기 때문이다. **INNER JOIN은** 어느 테이블을 먼저 읽어도 결과가 달라지지 않기에 **MySQL Optimizer가 JOIN의 순서를 조절해서 다양한 방법으로 최적화를 수행할 수 있다.** 그러나 **OUTER JOIN**은 반드시 **OUTER가 되는 테이블을 먼저 읽어야 하기 때문에 JOIN 순서를 Optimizer가 선택할 수 없다.**
+>
+> #### [**OUTER JOIN**](https://aridom.tistory.com/50)
+>
+> **INNER JOIN**에선 INNER Table에 일치하는 레코드가 있으면 가져오고, **일치하는게 없으면 버리는 걸 알 수 있다**. 이와 다르게 **OUTER JOIN**에선 INNER Table에 **일치하는 레코드가 없으면 모두 NULL로 채워서 가져온다**. 즉, INNER JOIN에서는 일치하는 레코드를 찾지 못했을 때는 OUTER Table의 결과를 모두 버렸지만 **OUTER JOIN에서는 OUTER Table의 결과를 버리지 않고 남겨준다.**
+>
+> **이 또한 Outer Table에서 만족하는 레코드 개수가 적을수록 속도가 빨라지는 특징을 가진다.**
+
 ```mysql
 -- 코드를 입력하세요
 SELECT O.ANIMAL_ID, O.ANIMAL_TYPE, O.NAME
