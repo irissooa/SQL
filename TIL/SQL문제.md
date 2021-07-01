@@ -563,3 +563,113 @@ FROM ANIMAL_INS
 ORDER BY ANIMAL_ID;
 ```
 
+
+
+## 프로그래머스_헤비유저가소유한장소
+
+> [프로그래머스_헤비유저가소유한장소](https://programmers.co.kr/learn/courses/30/lessons/77487)
+>
+> 이 서비스에서는 공간을 둘 이상 등록한 사람을 "헤비 유저"라고 부릅니다. 헤비 유저가 등록한 공간의 정보를 아이디 순으로 조회
+
+```mysql
+SELECT *
+FROM PLACES
+WHERE HOST_ID IN (
+SELECT HOST_ID FROM PLACES
+GROUP BY HOST_ID
+HAVING COUNT(ID) >= 2)
+ORDER BY ID;
+```
+
+
+
+## 프로그래머스_우유와요거트가 담긴 장바구니
+
+> [프로그래머스_우유와요거트가 담긴 장바구니](https://programmers.co.kr/learn/courses/30/lessons/62284)
+
+```mysql
+-- 코드를 입력하세요
+SELECT C.CART_ID
+FROM CART_PRODUCTS C
+WHERE C.NAME LIKE "%Milk%" AND C.CART_ID IN (
+SELECT CART_ID
+FROM CART_PRODUCTS
+WHERE NAME LIKE "%Yogurt%")
+GROUP BY CART_ID
+ORDER BY CART_ID;
+```
+
+```mysql
+-- 코드를 입력하세요
+SELECT Y.CART_ID
+FROM CART_PRODUCTS AS M
+JOIN (
+SELECT NAME, CART_ID
+FROM CART_PRODUCTS
+WHERE NAME LIKE "%Yogurt%") AS Y
+USING(CART_ID)
+WHERE M.NAME LIKE "%Milk%"
+GROUP BY CART_ID
+ORDER BY CART_ID;
+```
+
+- 다른코드
+
+```mysql
+SELECT a.cart_id
+from cart_products as a, cart_products as b
+where a.cart_id=b.cart_id and a.name='milk' and b.name='yogurt'
+order by a.cart_id;
+```
+
+```mysql
+SELECT
+    CART_ID
+FROM
+    CART_PRODUCTS
+GROUP BY
+    CART_ID
+HAVING
+    GROUP_CONCAT(NAME SEPARATOR ' ') LIKE '%Milk%'
+    AND
+    GROUP_CONCAT(NAME SEPARATOR ' ') LIKE '%Yogurt%'
+```
+
+```mysql
+select c.cart_id
+from cart_products c
+where c.cart_id in (select cart_id from cart_products  where name = 'Yogurt')
+and c.name = 'Milk'
+group by cart_id
+order by id
+```
+
+```mysql
+with temp as ( 
+    select distinct cart_id, name
+from cart_products
+where name = 'Milk' OR name = 'Yogurt'
+)
+
+SELECT temp.cart_id
+FROM TEMP
+group by cart_id
+having COUNT(*) = 2
+```
+
+
+
+```mysql
+select b.CART_ID 
+from (
+select a.CART_ID , count(*) CNT 
+    from (
+            select *
+            from CART_PRODUCTS
+            where NAME = 'Milk' or NAME = 'Yogurt' ) a
+            group by a.CART_ID
+            having CNT >= 2
+            order by a.CART_ID
+    ) b
+```
+
